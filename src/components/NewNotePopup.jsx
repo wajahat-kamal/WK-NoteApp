@@ -59,7 +59,7 @@ function NewNotePopup({ onClose, onCreateNote, editingNote }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-[#0007] bg-opacity-80 flex items-center justify-center z-50">
       <div 
         ref={popupRef}
         className="bg-white p-8 rounded-xl max-w-2xl w-[93%] shadow-2xl relative"
@@ -87,6 +87,7 @@ function NewNotePopup({ onClose, onCreateNote, editingNote }) {
             <input
               type="text"
               id="title"
+              autoFocus
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"

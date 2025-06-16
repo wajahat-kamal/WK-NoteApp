@@ -2,6 +2,7 @@ import {Plus } from "lucide-react"
 import { useState, useEffect } from "react";
 import NewNotePopup from "./NewNotePopup"
 import Note from "./Note"
+import DeleteConfirmationPopup from "./DeleteConfirmationPopup"
 
 function AddNewNote(){
   const [showPopup, setShowPopup] = useState(false);
@@ -11,6 +12,7 @@ function AddNewNote(){
     return savedNotes ? JSON.parse(savedNotes) : [];
   });
   const [editingNote, setEditingNote] = useState(null);
+  const [noteToDelete, setNoteToDelete] = useState(null);
 
   // Save notes to localStorage whenever they change
   useEffect(() => {
@@ -42,8 +44,19 @@ function AddNewNote(){
     handleClosePopup();
   };
 
-  const handleDeleteNote = (noteId) => {
-    setNotes(prevNotes => prevNotes.filter(note => note.id !== noteId));
+  const handleDeleteClick = (noteId) => {
+    setNoteToDelete(noteId);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (noteToDelete) {
+      setNotes(prevNotes => prevNotes.filter(note => note.id !== noteToDelete));
+      setNoteToDelete(null);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setNoteToDelete(null);
   };
 
   const handleEditNote = (note) => {
@@ -64,7 +77,7 @@ function AddNewNote(){
         <Note 
           key={note.id} 
           note={note} 
-          onDelete={handleDeleteNote}
+          onDelete={handleDeleteClick}
           onEdit={handleEditNote}
         />
       ))}
@@ -74,6 +87,13 @@ function AddNewNote(){
           onClose={handleClosePopup} 
           onCreateNote={handleCreateNote}
           editingNote={editingNote}
+        />
+      )}
+
+      {noteToDelete && (
+        <DeleteConfirmationPopup
+          onClose={handleDeleteCancel}
+          onConfirm={handleDeleteConfirm}
         />
       )}
     </div>
